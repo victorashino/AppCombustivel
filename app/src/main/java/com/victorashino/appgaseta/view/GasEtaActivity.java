@@ -2,7 +2,6 @@ package com.victorashino.appgaseta.view;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,12 +15,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.victorashino.appgaseta.R;
 import com.victorashino.appgaseta.databinding.ActivityGasetaBinding;
+import com.victorashino.appgaseta.model.Fuel;
 import com.victorashino.appgaseta.utils.UtilGasEta;
 
 public class GasEtaActivity extends AppCompatActivity {
 
-    EditText editGasolina;
-    EditText editEtanol;
+    Fuel gasolineFuel;
+    Fuel ethanolFuel;
+
+    EditText editGasoline;
+    EditText editEthanol;
 
     TextView textResult;
 
@@ -30,8 +33,8 @@ public class GasEtaActivity extends AppCompatActivity {
     Button btnSave;
     Button btnDone;
 
-    double priceGasolina;
-    double priceEtanol;
+    double priceGasoline;
+    double priceEthanol;
     String recomendation;
 
     @Override
@@ -46,8 +49,8 @@ public class GasEtaActivity extends AppCompatActivity {
             return insets;
         });
 
-        editGasolina = binding.editGasolina;
-        editEtanol = binding.editEtanol;
+        editGasoline = binding.editGasoline;
+        editEthanol = binding.editEthanol;
 
         textResult = binding.textResult;
 
@@ -60,22 +63,22 @@ public class GasEtaActivity extends AppCompatActivity {
 
             boolean isDataOk = true;
 
-            if (TextUtils.isEmpty(editGasolina.getText())) {
-                editGasolina.setError("* Obrigatorio");
-                editGasolina.requestFocus();
+            if (TextUtils.isEmpty(editGasoline.getText())) {
+                editGasoline.setError("* Obrigatorio");
+                editGasoline.requestFocus();
                 isDataOk = false;
             }
 
-            if (TextUtils.isEmpty(editEtanol.getText())) {
-                editEtanol.setError("* Obrigatorio");
-                editEtanol.requestFocus();
+            if (TextUtils.isEmpty(editEthanol.getText())) {
+                editEthanol.setError("* Obrigatorio");
+                editEthanol.requestFocus();
                 isDataOk = false;
             }
 
             if (isDataOk) {
-                priceGasolina = Double.parseDouble(editGasolina.getText().toString());
-                priceEtanol = Double.parseDouble(editEtanol.getText().toString());
-                recomendation = UtilGasEta.calculeBestOption(priceGasolina, priceEtanol);
+                priceGasoline = Double.parseDouble(editGasoline.getText().toString());
+                priceEthanol = Double.parseDouble(editEthanol.getText().toString());
+                recomendation = UtilGasEta.calculeBestOption(priceGasoline, priceEthanol);
                 textResult.setText(recomendation);
             } else {
                 Toast.makeText(GasEtaActivity.this, "Digite os dados obrigatórios!", Toast.LENGTH_LONG).show();
@@ -83,12 +86,24 @@ public class GasEtaActivity extends AppCompatActivity {
         });
 
         btnClear.setOnClickListener(view -> {
-            editGasolina.setText("");
-            editEtanol.setText("");
+            editGasoline.setText("");
+            editEthanol.setText("");
         });
 
         btnSave.setOnClickListener(view -> {
 
+            // TODO: Desabilitar o botão salvar
+            ethanolFuel = new Fuel();
+            gasolineFuel = new Fuel();
+
+            gasolineFuel.setFuel("Gasoline");
+            gasolineFuel.setFuelPrice(priceGasoline);
+
+            ethanolFuel.setFuel("Ethano");
+            ethanolFuel.setFuelPrice(priceEthanol);
+
+            gasolineFuel.setRecomendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
+            ethanolFuel.setRecomendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
         });
 
         btnDone.setOnClickListener(view -> {
