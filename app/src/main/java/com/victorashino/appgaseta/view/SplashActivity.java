@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.victorashino.appgaseta.R;
+import com.victorashino.appgaseta.data.GasEtaDB;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,6 +29,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void comutSplashScreen() {
+
+        GasEtaDB db = new GasEtaDB(SplashActivity.this);
+
         new Handler().postDelayed(() -> {
             Intent mainScreen = new Intent(SplashActivity.this, GasEtaActivity.class);
             startActivity(mainScreen);

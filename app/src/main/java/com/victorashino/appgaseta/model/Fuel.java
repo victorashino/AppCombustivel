@@ -4,7 +4,7 @@ public class Fuel {
 
     private String fuel;
     private double fuelPrice;
-    private String recomendation;
+    private String recommendation;
 
     public String getFuel() {
         return fuel;
@@ -22,11 +22,11 @@ public class Fuel {
         this.fuelPrice = fuelPrice;
     }
 
-    public String getRecomendation() {
-        return recomendation;
+    public String getRecommendation() {
+        return recommendation;
     }
 
-    public void setRecomendation(String recomendation) {
-        this.recomendation = recomendation;
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
     }
 }

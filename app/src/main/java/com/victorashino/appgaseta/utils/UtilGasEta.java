@@ -2,9 +2,9 @@ package com.victorashino.appgaseta.utils;
 
 public class UtilGasEta {
 
-    public static String calculeBestOption(double gasolina, double etanol) {
+    public static String calculeBestOption(double gasoline, double etanol) {
 
-        double idealPrice = gasolina * 0.70;
+        double idealPrice = gasoline * 0.70;
         String returnMessage;
 
         if (etanol <= idealPrice) {

@@ -14,11 +14,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.victorashino.appgaseta.R;
+import com.victorashino.appgaseta.controller.FuelController;
 import com.victorashino.appgaseta.databinding.ActivityGasetaBinding;
 import com.victorashino.appgaseta.model.Fuel;
 import com.victorashino.appgaseta.utils.UtilGasEta;
 
 public class GasEtaActivity extends AppCompatActivity {
+
+    FuelController controller;
 
     Fuel gasolineFuel;
     Fuel ethanolFuel;
@@ -48,6 +51,8 @@ public class GasEtaActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        controller = new FuelController(GasEtaActivity.this);
 
         editGasoline = binding.editGasoline;
         editEthanol = binding.editEthanol;
@@ -80,30 +85,39 @@ public class GasEtaActivity extends AppCompatActivity {
                 priceEthanol = Double.parseDouble(editEthanol.getText().toString());
                 recomendation = UtilGasEta.calculeBestOption(priceGasoline, priceEthanol);
                 textResult.setText(recomendation);
+
+                btnSave.setEnabled(true);
             } else {
                 Toast.makeText(GasEtaActivity.this, "Digite os dados obrigatórios!", Toast.LENGTH_LONG).show();
+                btnSave.setEnabled(false);
             }
         });
 
         btnClear.setOnClickListener(view -> {
             editGasoline.setText("");
             editEthanol.setText("");
+
+            btnSave.setEnabled(false);
+
+            controller.clear();
         });
 
         btnSave.setOnClickListener(view -> {
 
-            // TODO: Desabilitar o botão salvar
             ethanolFuel = new Fuel();
             gasolineFuel = new Fuel();
 
             gasolineFuel.setFuel("Gasoline");
             gasolineFuel.setFuelPrice(priceGasoline);
 
-            ethanolFuel.setFuel("Ethano");
+            ethanolFuel.setFuel("Ethanol");
             ethanolFuel.setFuelPrice(priceEthanol);
 
-            gasolineFuel.setRecomendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
-            ethanolFuel.setRecomendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
+            gasolineFuel.setRecommendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
+            ethanolFuel.setRecommendation(UtilGasEta.calculeBestOption(priceGasoline, priceEthanol));
+
+            controller.save(gasolineFuel);
+            controller.save(ethanolFuel);
         });
 
         btnDone.setOnClickListener(view -> {

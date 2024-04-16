@@ -9,4 +9,5 @@
     <string name="calcular">Calcular</string>
     <string name="litro_etanol">R$ Etanol</string>
     <string name="litro_gasolina">R$ Gasolina</string>
+    <string name="logo">Logo</string>
 </resources>
