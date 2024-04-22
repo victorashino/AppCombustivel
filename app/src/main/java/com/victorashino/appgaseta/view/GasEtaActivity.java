@@ -2,9 +2,6 @@ package com.victorashino.appgaseta.view;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +16,8 @@ import com.victorashino.appgaseta.databinding.ActivityGasetaBinding;
 import com.victorashino.appgaseta.model.Fuel;
 import com.victorashino.appgaseta.utils.UtilGasEta;
 
+import java.util.List;
+
 public class GasEtaActivity extends AppCompatActivity {
 
     FuelController controller;
@@ -26,19 +25,11 @@ public class GasEtaActivity extends AppCompatActivity {
     Fuel gasolineFuel;
     Fuel ethanolFuel;
 
-    EditText editGasoline;
-    EditText editEthanol;
-
-    TextView textResult;
-
-    Button btnCalcule;
-    Button btnClear;
-    Button btnSave;
-    Button btnDone;
-
     double priceGasoline;
     double priceEthanol;
     String recomendation;
+
+    List<Fuel> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,55 +45,56 @@ public class GasEtaActivity extends AppCompatActivity {
 
         controller = new FuelController(GasEtaActivity.this);
 
-        editGasoline = binding.editGasoline;
-        editEthanol = binding.editEthanol;
+        data = controller.getListData();
 
-        textResult = binding.textResult;
+        Fuel altObject = data.get(1);
 
-        btnCalcule = binding.btnCalcule;
-        btnClear = binding.btnClear;
-        btnSave = binding.btnSave;
-        btnDone = binding.btnDone;
+        altObject.setFuel("**ETHANOL**");
+        altObject.setFuelPrice(4.97);
+        altObject.setRecommendation("**ABASTECER COM GASOLINA**");
+        controller.modify(altObject);
 
-        btnCalcule.setOnClickListener(view -> {
+        controller.delete(43);
+
+        binding.btnCalcule.setOnClickListener(view -> {
 
             boolean isDataOk = true;
 
-            if (TextUtils.isEmpty(editGasoline.getText())) {
-                editGasoline.setError("* Obrigatorio");
-                editGasoline.requestFocus();
+            if (TextUtils.isEmpty(binding.editGasoline.getText())) {
+                binding.editGasoline.setError("* Obrigatorio");
+                binding.editGasoline.requestFocus();
                 isDataOk = false;
             }
 
-            if (TextUtils.isEmpty(editEthanol.getText())) {
-                editEthanol.setError("* Obrigatorio");
-                editEthanol.requestFocus();
+            if (TextUtils.isEmpty(binding.editEthanol.getText())) {
+                binding.editEthanol.setError("* Obrigatorio");
+                binding.editEthanol.requestFocus();
                 isDataOk = false;
             }
 
             if (isDataOk) {
-                priceGasoline = Double.parseDouble(editGasoline.getText().toString());
-                priceEthanol = Double.parseDouble(editEthanol.getText().toString());
+                priceGasoline = Double.parseDouble(binding.editGasoline.getText().toString());
+                priceEthanol = Double.parseDouble(binding.editEthanol.getText().toString());
                 recomendation = UtilGasEta.calculeBestOption(priceGasoline, priceEthanol);
-                textResult.setText(recomendation);
+                binding.textResult.setText(recomendation);
 
-                btnSave.setEnabled(true);
+                binding.btnSave.setEnabled(true);
             } else {
                 Toast.makeText(GasEtaActivity.this, "Digite os dados obrigatórios!", Toast.LENGTH_LONG).show();
-                btnSave.setEnabled(false);
+                binding.btnSave.setEnabled(false);
             }
         });
 
-        btnClear.setOnClickListener(view -> {
-            editGasoline.setText("");
-            editEthanol.setText("");
+        binding.btnClear.setOnClickListener(view -> {
+            binding.editGasoline.setText("");
+            binding.editEthanol.setText("");
 
-            btnSave.setEnabled(false);
+            binding.btnSave.setEnabled(false);
 
             controller.clear();
         });
 
-        btnSave.setOnClickListener(view -> {
+        binding.btnSave.setOnClickListener(view -> {
 
             ethanolFuel = new Fuel();
             gasolineFuel = new Fuel();
@@ -120,7 +112,7 @@ public class GasEtaActivity extends AppCompatActivity {
             controller.save(ethanolFuel);
         });
 
-        btnDone.setOnClickListener(view -> {
+        binding.btnDone.setOnClickListener(view -> {
             Toast.makeText(GasEtaActivity.this, "Volte Sempre", Toast.LENGTH_LONG).show();
             finish();
         });

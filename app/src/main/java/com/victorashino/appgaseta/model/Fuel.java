@@ -2,9 +2,18 @@ package com.victorashino.appgaseta.model;
 
 public class Fuel {
 
+    private int id;
     private String fuel;
     private double fuelPrice;
     private String recommendation;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFuel() {
         return fuel;

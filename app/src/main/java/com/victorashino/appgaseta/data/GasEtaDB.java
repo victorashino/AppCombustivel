@@ -1,14 +1,20 @@
 package com.victorashino.appgaseta.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.victorashino.appgaseta.model.Fuel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class GasEtaDB extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "gaseta.db";
-    public static final int DB_VERSION = 1;
+    private static final String DB_NAME = "gaseta.db";
+    private static final int DB_VERSION = 1;
 
     Cursor cursor;
 
@@ -38,23 +44,40 @@ public class GasEtaDB extends SQLiteOpenHelper {
 
     }
 
-    // Para criar um database
-    // 1 - nome do db
-    // 2 - versão do db
+    public void saveObject(String table, ContentValues data) {
+        db.insert(table, null, data);
+    }
 
-    // TODO: Criar métodos para implementar um CRUD
-    // Create
-    // Read
-    // Update
-    // Delete
+    public List<Fuel> listData() {
+        List<Fuel> list = new ArrayList<>();
 
-    //Create database nome_do_banco_de_dados.db
-    // Create table
+        Fuel record;
 
-    // Select * from table
+        String querySQL = "SELECT * FROM Fuel";
 
-    // Update from table
+        cursor = db.rawQuery(querySQL, null);
 
-    // Delete from
+        if (cursor.moveToFirst()) {
+            do {
+                record = new Fuel();
+                record.setId(cursor.getInt(0));
+                record.setFuel(cursor.getString(1));
+                record.setFuelPrice(cursor.getDouble(2));
+                record.setRecommendation(cursor.getString(3));
+                list.add(record);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
+
+    public void modifyData(String table, ContentValues data) {
+
+        int id = data.getAsInteger("id");
+        db.update(table, data, "id=?", new String[]{Integer.toString(id)});
+    }
+
+    public void delete(String table, int id) {
+        db.delete(table, "id=?", new String[]{Integer.toString(id)});
+    }
 
 }

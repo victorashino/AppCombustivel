@@ -3,13 +3,13 @@
     <style name="Base.Theme.AppList" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- Primary brand color -->
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryVariant">@color/ciano</item>
-        <item name="colorOnPrimary">@color/yellow</item>
+        <item name="colorPrimary">@color/blue_100</item>
+        <item name="colorPrimaryVariant">@color/blue_300</item>
+        <item name="colorOnPrimary">@color/blue_500</item>
         <!-- Second brand color -->
-        <item name="colorSecondary">@color/red</item>
-        <item name="colorSecondaryVariant">@color/green</item>
-        <item name="colorOnSecondary">@color/magenta</item>
+        <item name="colorSecondary">@color/blue_100</item>
+        <item name="colorSecondaryVariant">@color/blue_300</item>
+        <item name="colorOnSecondary">@color/blue_500</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
